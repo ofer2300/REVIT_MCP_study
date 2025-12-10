@@ -111,6 +111,147 @@ REVIT-MCP/
 
 ## 🤖 多方案 AI Agent 設定
 
+### 核心概念：MCP Clients 與 MCP Server
+
+在開始設定之前，需要理解本架構的核心概念：
+
+#### 什麼是 MCP Client？
+
+**MCP Client（客戶端）** 是指能夠理解並使用 MCP 工具的 AI 應用程式。簡單來說，就是：
+- Claude Desktop
+- Gemini CLI
+- VS Code Copilot
+- Google Antigravity
+
+這些應用程式內部內建了「MCP 客戶端」功能，讓它們可以讀取和調用 MCP Server 提供的工具。
+
+#### 什麼是 MCP Server？
+
+**MCP Server** 是本專案中的 Node.js 應用程式（`MCP-Server/build/index.js`），它：
+- 定義了 Revit 操作工具（create_wall、query_elements 等）
+- 透過 WebSocket 與 Revit Add-in 通訊
+- 將 AI 指令轉換為 Revit API 調用
+
+---
+
+### 4+1 方案架構說明
+
+本專案提供了 **5 種使用方案**，分為兩大類：
+
+#### 外部調用方案（4 種）
+
+這些方案都遵循相同的架構：
+
+```
+┌─────────────────┐
+│   AI 應用程式   │  (Claude Desktop / Gemini CLI / VS Code / Antigravity)
+│  (MCP Client)   │
+└────────┬────────┘
+         │ 1. 讀取 MCP Server 地址
+         │
+┌────────▼────────┐
+│   MCP Server    │  (Node.js - 本專案提供)
+│  (Revit Tools)  │
+└────────┬────────┘
+         │ 2. WebSocket 連接
+         │
+┌────────▼────────┐
+│  Revit Add-in   │  (C# - RevitMCP.dll)
+│  (WebSocket)    │
+└────────┬────────┘
+         │ 3. Revit API 調用
+         │
+┌────────▼────────┐
+│  Revit 應用程式  │
+└─────────────────┘
+```
+
+**特點：**
+- AI 應用程式已經內建 MCP 支援，不需要 API Key
+- MCP Server 只負責 Revit 工具的定義和通訊
+- 所有 API 金鑰都由 AI 應用程式自己管理（如 Claude Desktop 有自己的 API Key）
+
+---
+
+#### 內嵌方案（1 種）
+
+```
+┌────────────────────────────────┐
+│     Revit 應用程式             │
+├────────────────────────────────┤
+│  Revit Add-in with AI Chat     │
+│                                │
+│  ┌──────────────────────────┐  │
+│  │  Chat Window UI (WPF)    │  │
+│  └──────────────────────────┘  │
+│           │ 使用 API Key        │
+│  ┌────────▼──────────────────┐  │
+│  │  GeminiChatService        │  │
+│  │  (C# 直接呼叫 Gemini)     │  │
+│  └────────┬──────────────────┘  │
+│           │                     │
+└───────────┼─────────────────────┘
+            │ HTTP 請求到 Gemini API
+            │
+        ┌───▼──────┐
+        │ Gemini   │
+        │ API      │
+        └──────────┘
+```
+
+**特點：**
+- 完全在 Revit 內部運行，無需啟動外部應用程式
+- 直接調用 Gemini API，需要 API Key
+- 使用者體驗最流暢（在 Revit 內直接對話）
+
+---
+
+### 為什麼只有內嵌方案需要 API Key？
+
+這是關鍵的差異：
+
+| 方案 | 是否需要 API Key | 原因 |
+|------|------------------|------|
+| Claude Desktop | ❌ 不需要 | Claude Desktop 已綁定您的 Anthropic 帳戶和 API Key |
+| Gemini CLI | ❌ 不需要 | Gemini CLI 已綁定您的 Google 帳戶 |
+| VS Code Copilot | ❌ 不需要 | GitHub Copilot 已綁定您的 GitHub 帳戶和授權 |
+| Antigravity | ❌ 不需要 | Antigravity 已綁定您的 Google Cloud 帳戶 |
+| **內嵌 Chat（Gemini API）** | **✅ 需要** | 這是**直接**調用 Gemini API，不透過應用程式中介 |
+
+簡單說：
+- **外部 4 種方案**：AI 應用程式已經是「付費客戶」，你直接使用它
+- **內嵌方案**：你自己直接成為 Gemini API 的「付費客戶」，需要提供 API Key
+
+---
+
+### MCP Server 在各方案中的角色
+
+無論用哪種方案，**MCP Server 的作用都一樣**：
+
+```
+MCP Server 的責任：
+1. 定義 Revit 工具 (create_wall、query_elements 等)
+2. 接收 AI 應用程式的工具調用請求
+3. 透過 WebSocket 將請求轉發給 Revit Add-in
+4. 返回執行結果給 AI 應用程式
+```
+
+MCP Server **不直接**與任何 AI API 通訊，它只是一個「翻譯官」。
+
+---
+
+### 方案選擇建議
+
+| 場景 | 推薦方案 | 原因 |
+|------|---------|------|
+| 日常使用，最簡單 | Claude Desktop | 無需額外配置，直接用現成應用 |
+| 想在 Revit 內對話 | 內嵌 Chat（Gemini API）| 最流暢的使用體驗 |
+| 偏好 Google | Gemini CLI | 用自己的 Google 帳戶 |
+| 程式開發者 | VS Code Copilot | 在開發環境中無縫使用 |
+| 雲端開發 | Antigravity | 整合 Google Cloud 工作流 |
+
+---
+
 ### 方案 1️⃣：Gemini CLI
 
 Gemini CLI 是 Google 的命令列 AI 工具，可以在終端機直接與 Gemini 2.5 Flash 對話。
