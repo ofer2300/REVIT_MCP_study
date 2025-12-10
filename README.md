@@ -111,21 +111,172 @@ REVIT-MCP/
 
 ## 🤖 多方案 AI Agent 設定
 
-### 方案 1：Gemini CLI
+### 方案 1️⃣：Gemini CLI
 
-Gemini CLI 是 Google 的命令列 AI 工具。
+Gemini CLI 是 Google 的命令列 AI 工具，可以在終端機直接與 Gemini 2.5 Flash 對話。
 
-#### 安裝 Gemini CLI
+#### 步驟 1：安裝 Gemini CLI（適合初學者）
 
-```bash
-npm install -g @anthropic-ai/gemini-cli
-# 或
-pip install gemini-cli
-```
+**什麼是 Gemini CLI？** 它是一個可以在 Windows 命令提示字元或 PowerShell 執行的工具。
 
-#### 設定 MCP
+1. **下載 Node.js**（如果還沒安裝）
+   - 前往 https://nodejs.org
+   - 點擊「LTS」版本下載
+   - 執行下載的安裝程式，一直點「Next」到完成
+   - 重新啟動電腦
 
-1. 建立設定檔 `~/.gemini/settings.json`：
+2. **開啟 PowerShell**
+   - 按 `Win + X`
+   - 選擇「Windows PowerShell (系統管理員)」
+   - 複製貼上下方指令，按 Enter：
+   ```powershell
+   npm install -g @google/gemini-cli
+   ```
+   - 等待安裝完成（會看到綠色的勾勾）
+
+#### 步驟 2.5：使用本專案提供的已配置版本（最簡單！）
+
+**最簡單的方式：直接複製我們已經準備好的設定檔**
+
+1. **找到本專案的設定檔**
+   - 在 `MCP-Server` 資料夾中找到 `gemini_mcp_config.json` 檔案
+   - 記住此檔案的完整位置（例如：`C:\Users\User\Desktop\REVIT MCP\MCP-Server\gemini_mcp_config.json`）
+
+2. **在 PowerShell 中執行**
+   ```powershell
+   $env:PATH = "C:\Program Files\Git\bin;$env:PATH"
+   cd "C:\Users\User\Desktop\REVIT MCP\MCP-Server"
+   gemini --config gemini_mcp_config.json
+   ```
+
+#### 步驟 3：啟動（初學者版）
+
+1. **先啟動 Revit**
+   - 開啟 Revit 2022
+   - 在「MCP Tools」面板點擊「**MCP 服務 (開/關)**」按鈕
+   - 看到「WebSocket 伺服器已啟動」就成功了
+
+2. **再開啟 Gemini CLI**
+   - 開啟 PowerShell (系統管理員)
+   - 執行：
+   ```powershell
+   gemini
+   ```
+   - 現在您可以在 Gemini 中輸入指令來控制 Revit
+
+3. **測試對話**
+   ```
+   > 請列出 Revit 專案中的所有樓層
+   > 請幫我建立一面 5 米長的牆
+   ```
+
+---
+
+### 方案 2️⃣：VS Code (GitHub Copilot)
+
+在程式碼編輯器 VS Code 中直接與 AI 對話並控制 Revit。
+
+#### 步驟 1：安裝 VS Code
+
+1. 前往 https://code.visualstudio.com
+2. 點擊藍色的「Download」按鈕
+3. 執行下載的安裝程式
+4. 一直點「Next」直到完成，重新啟動電腦
+
+#### 步驟 2.5：使用本專案的已配置版本（推薦！）
+
+**好消息：我們已經為您準備好了設定檔！**
+
+1. **開啟本專案資料夾**
+   - 用滑鼠右鍵點擊 `c:\Users\User\Desktop\REVIT MCP` 資料夾
+   - 選擇「**以 VS Code 開啟**」
+   - 或者在 VS Code 中點擊 File → Open Folder，選擇此資料夾
+
+2. **設定檔已在 `.vscode/mcp.json` 中**
+   - 檔案已經準備好，您無需修改任何東西
+   - 系統會自動載入這個設定
+
+#### 步驟 3：啟動（初學者版）
+
+1. **確認 Revit MCP 服務已啟動**
+   - 開啟 Revit 2022
+   - 點擊「MCP 服務 (開/關)」
+
+2. **在 VS Code 中開啟 Copilot Chat**
+   - 按快捷鍵 `Ctrl + Shift + I`
+   - 或點擊左邊 Copilot 圖示
+   
+3. **開始提問**
+   - 在聊天框輸入：「請幫我在 Revit 中查詢所有的柱子」
+   - AI 會自動使用 Revit 工具執行您的指令
+
+---
+
+### 方案 3️⃣：Claude Desktop（推薦初學者！）
+
+Anthropic 官方桌面應用程式，這是**最簡單的方式**。
+
+#### 步驟 1：安裝 Claude Desktop
+
+1. 前往 https://claude.ai/download
+2. 點擊「Download for Windows」
+3. 執行下載的 `.exe` 安裝程式
+4. 安裝完成後重新啟動電腦
+
+#### 步驟 2.5：在 Claude Desktop 中直接添加 MCP（最簡單！）
+
+**無需複製檔案！直接在應用程式中設定：**
+
+1. **打開 Claude Desktop 應用程式**
+
+2. **點擊右上角的「⚙️ 設定」**
+   - 或在左下角找到「Settings」
+
+3. **找到「MCP Servers」選項**
+
+4. **點擊「Add Server」或「新增伺服器」**
+
+5. **填入以下資訊**
+   - **名稱**：`revit-mcp`
+   - **命令**：`node`
+   - **參數**：`C:\Users\User\Desktop\REVIT MCP\MCP-Server\build\index.js`
+   - **環境變數**：
+     ```
+     REVIT_VERSION: 2022
+     ```
+
+6. **點擊「Save」或「儲存」** - 完成！
+
+#### 步驟 3：啟動（初學者版）
+
+1. **啟動 Revit**
+   - 開啟 Revit 2022
+   - 點擊「MCP 服務 (開/關)」
+
+2. **使用 Claude Desktop**
+   - Claude 應用程式會自動連接 Revit
+   - 直接在聊天框輸入對話，例如：
+   ```
+   請幫我在 Revit 中建立一個 3m × 5m 的樓板
+   ```
+
+3. **Claude 會自動為您執行操作！**
+
+---
+
+### 方案 4️⃣：Google Antigravity (Project IDX)
+
+Google 的雲端 AI 開發環境（進階選項）。
+
+#### 步驟 1：建立 Google Cloud 專案
+
+1. 前往 https://console.cloud.google.com
+2. 點擊「Create Project」
+3. 填入專案名稱，點擊「Create」
+
+#### 步驟 2.5：設定 Antigravity MCP
+
+1. **在 Project IDX 中建立 `.idx/mcp.json`**
    ```json
    {
      "mcpServers": {
@@ -140,143 +291,18 @@ pip install gemini-cli
    }
    ```
 
-2. 或直接使用本專案提供的範本：
-   ```powershell
-   # 複製並修改路徑
-   Copy-Item "MCP-Server\gemini_mcp_config.json" "$env:USERPROFILE\.gemini\settings.json"
-   ```
+2. **或使用 Antigravity 的圖形介面**
+   - Settings → MCP Servers
+   - Add Server
+   - 填入 MCP Server 路徑
 
-3. 編輯檔案，將路徑改為您的實際路徑
-
-#### 啟動步驟
-
-```bash
-# 1. 確認 Revit MCP 服務已啟動
-# 2. 啟動 Gemini CLI
-gemini
-
-# 3. 開始對話，例如：
-> 請幫我在 Revit 中建立一面 5 米長的牆
-```
-
----
-
-### 方案 2：VS Code (GitHub Copilot)
-
-在 VS Code 中使用 GitHub Copilot Chat 搭配 MCP。
-
-#### 設定步驟
-
-1. 在專案根目錄建立 `.vscode/mcp.json`：
-   ```json
-   {
-     "servers": {
-       "revit-mcp": {
-         "command": "node",
-         "args": ["${workspaceFolder}/MCP-Server/build/index.js"],
-         "env": {
-           "REVIT_VERSION": "2022"
-         }
-       }
-     }
-   }
-   ```
-
-2. 或使用全域設定 `%APPDATA%\Code\User\settings.json`：
-   ```json
-   {
-     "mcp.servers": {
-       "revit-mcp": {
-         "command": "node",
-         "args": ["C:\\path\\to\\MCP-Server\\build\\index.js"],
-         "env": {
-           "REVIT_VERSION": "2022"
-         }
-       }
-     }
-   }
-   ```
-
-#### 啟動步驟
+#### 步驟 3：啟動
 
 1. 確認 Revit MCP 服務已啟動
-2. 開啟 VS Code
-3. 開啟 Copilot Chat (Ctrl+Shift+I)
-4. 使用 `@mcp` 或直接詢問 Revit 相關問題
+2. 在 Antigravity 環境中開啟 AI Chat
+3. 與 Gemini 對話控制 Revit
 
----
-
-### 方案 3：Claude Desktop
-
-Anthropic 官方桌面應用程式。
-
-#### 設定步驟
-
-1. 找到 Claude Desktop 設定檔位置：
-   ```
-   Windows: %APPDATA%\Claude\claude_desktop_config.json
-   macOS: ~/Library/Application Support/Claude/claude_desktop_config.json
-   ```
-
-2. 加入 MCP Server 設定：
-   ```json
-   {
-     "mcpServers": {
-       "revit-mcp": {
-         "command": "node",
-         "args": ["C:\\path\\to\\MCP-Server\\build\\index.js"],
-         "env": {
-           "REVIT_VERSION": "2022"
-         }
-       }
-     }
-   }
-   ```
-
-3. 您也可以複製本專案的範本：
-   ```powershell
-   Copy-Item "MCP-Server\claude_desktop_config.json" "$env:APPDATA\Claude\claude_desktop_config.json"
-   ```
-
-#### 啟動步驟
-
-1. 確認 Revit MCP 服務已啟動
-2. 啟動 Claude Desktop
-3. 在對話中使用 Revit 工具
-
----
-
-### 方案 4：Google Antigravity (Project IDX)
-
-Google 的雲端 AI 開發環境。
-
-#### 設定步驟
-
-1. 在 Project IDX 專案中建立 `.idx/mcp.json`：
-   ```json
-   {
-     "mcpServers": {
-       "revit-mcp": {
-         "command": "node",
-         "args": ["/path/to/MCP-Server/build/index.js"],
-         "env": {
-           "REVIT_VERSION": "2022"
-         }
-       }
-     }
-   }
-   ```
-
-2. 或使用 Antigravity 的 MCP 設定介面：
-   - 開啟 Settings → MCP Servers
-   - 新增伺服器，填入名稱 `revit-mcp`
-   - Command: `node`
-   - Args: MCP Server 的完整路徑
-
-#### 注意事項
-
-- Antigravity 運行在雲端，需要確保 MCP Server 可透過網路存取
-- 建議在本地網路環境使用，或透過安全通道連線
+⚠️ **注意**：因為 Antigravity 運行在雲端，MCP Server 需要在有網路存取的機器上運行。
 
 ---
 
@@ -295,6 +321,413 @@ Google 的雲端 AI 開發環境。
 | `delete_element` | 刪除元素 |
 | `get_all_levels` | 取得所有樓層 |
 
+---
+
+## 🚀 進階功能：Revit Add-in 中整合 AI API（Gemini 2.5 Flash）
+
+### 功能說明
+
+讓 Revit 使用者直接在 Add-in 中開啟一個**對話視窗**，與 Gemini 2.5 Flash AI 交互式對話並控制 Revit。無需額外啟動外部工具。
+
+```
+┌─────────────────────────────────────┐
+│        Revit 視窗                   │
+├─────────────────────────────────────┤
+│  MCP Tools                          │
+│  ┌──────────────────────────────┐  │
+│  │ MCP 服務(開/關)              │  │
+│  ├──────────────────────────────┤  │
+│  │ MCP 設定                     │  │
+│  ├──────────────────────────────┤  │
+│  │ 🆕 AI Chat 助手（新功能）    │  │
+│  └──────────────────────────────┘  │
+│                                     │
+│  ┌─────────────────────────────────┐│
+│  │ AI Chat 視窗 (WPF 對話框)       ││
+│  ├─────────────────────────────────┤│
+│  │ 您：請幫我建立一個 3mx5m 的樓板 ││
+│  │ AI: 我已建立樓板，ID: 123456   ││
+│  │                                 ││
+│  │ [輸入框] [傳送按鈕]             ││
+│  └─────────────────────────────────┘│
+└─────────────────────────────────────┘
+```
+
+### 開發步驟
+
+#### 步驟 1：取得 Gemini API Key
+
+1. **前往 Google AI Studio**
+   - 打開瀏覽器，訪問 https://aistudio.google.com/apikey
+
+2. **登入您的 Google 帳戶**
+   - 如果沒有，請建立一個
+
+3. **點擊「Create API Key」**
+   - 選擇「Create new secret key in new project」
+   - Google 會自動建立一個免費的 API Key
+
+4. **複製 API Key**
+   - 會看到一個長的字串，例如：
+   ```
+   AIzaSyDx...xyz123abc
+   ```
+   - **務必妥善保管此 Key，不要分享給他人！**
+
+#### 步驟 2：在 C# 中建立 AI 聊天服務
+
+在 `MCP/MCP/Core/` 資料夾中建立新檔案 `GeminiChatService.cs`：
+
+```csharp
+using System;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
+
+namespace RevitMCP.Core
+{
+    /// <summary>
+    /// Gemini 2.5 Flash API 整合服務
+    /// </summary>
+    public class GeminiChatService
+    {
+        private readonly string _apiKey;
+        private readonly string _apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";
+        private readonly HttpClient _httpClient;
+
+        public GeminiChatService(string apiKey)
+        {
+            _apiKey = apiKey ?? throw new ArgumentNullException(nameof(apiKey));
+            _httpClient = new HttpClient();
+        }
+
+        /// <summary>
+        /// 與 Gemini AI 交互式對話
+        /// </summary>
+        public async Task<string> ChatAsync(string userMessage, string context = "")
+        {
+            try
+            {
+                // 構建請求
+                var requestBody = new
+                {
+                    contents = new[]
+                    {
+                        new
+                        {
+                            parts = new[]
+                            {
+                                new
+                                {
+                                    text = $"{context}\n\n用戶問題: {userMessage}"
+                                }
+                            }
+                        }
+                    },
+                    generationConfig = new
+                    {
+                        temperature = 0.7,
+                        maxOutputTokens = 1024
+                    }
+                };
+
+                var jsonContent = JsonConvert.SerializeObject(requestBody);
+                var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+                // 發送請求到 Gemini API
+                var response = await _httpClient.PostAsync(
+                    $"{_apiUrl}?key={_apiKey}",
+                    content
+                );
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new Exception($"Gemini API 錯誤: {response.StatusCode}");
+                }
+
+                // 解析回應
+                var responseContent = await response.Content.ReadAsStringAsync();
+                dynamic result = JsonConvert.DeserializeObject(responseContent);
+                
+                string aiResponse = result.candidates[0].content.parts[0].text;
+                return aiResponse;
+            }
+            catch (Exception ex)
+            {
+                return $"AI 服務錯誤: {ex.Message}";
+            }
+        }
+    }
+}
+```
+
+#### 步驟 3：建立 WPF 對話視窗
+
+在 `MCP/MCP/Commands/` 中建立 `ChatCommand.cs`：
+
+```csharp
+using System;
+using Autodesk.Revit.UI;
+using RevitMCP.Core;
+
+namespace RevitMCP.Commands
+{
+    public class ChatCommand : IExternalCommand
+    {
+        public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
+        {
+            try
+            {
+                // 從設定中讀取 API Key
+                var apiKey = System.Environment.GetEnvironmentVariable("GEMINI_API_KEY");
+                
+                if (string.IsNullOrEmpty(apiKey))
+                {
+                    TaskDialog.Show("設定錯誤", 
+                        "請設定環境變數 GEMINI_API_KEY\n\n" +
+                        "在 Windows 中：\n" +
+                        "1. 按 Win + Pause\n" +
+                        "2. 進階系統設定\n" +
+                        "3. 環境變數\n" +
+                        "4. 新增：GEMINI_API_KEY = 您的 API Key");
+                    return Result.Failed;
+                }
+
+                // 建立聊天服務
+                var chatService = new GeminiChatService(apiKey);
+
+                // 開啟對話視窗
+                var chatWindow = new ChatWindow(chatService, commandData.Application);
+                chatWindow.Show();
+
+                return Result.Succeeded;
+            }
+            catch (Exception ex)
+            {
+                TaskDialog.Show("錯誤", $"開啟 AI Chat 失敗: {ex.Message}");
+                return Result.Failed;
+            }
+        }
+    }
+}
+```
+
+#### 步驟 4：建立 WPF 視窗 UI
+
+在 `MCP/MCP/` 中建立 `ChatWindow.xaml`：
+
+```xml
+<Window x:Class="RevitMCP.ChatWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Revit AI Chat 助手"
+        Height="600"
+        Width="500"
+        Background="#F5F5F5">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- 聊天歷史 -->
+        <ListBox x:Name="ChatHistory"
+                 Grid.Row="0"
+                 Margin="10"
+                 Background="White"
+                 BorderThickness="1"
+                 BorderBrush="#DDD">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Border Margin="5" Padding="10" CornerRadius="5">
+                        <TextBlock Text="{Binding}"
+                                   TextWrapping="Wrap"
+                                   Foreground="#333"/>
+                    </Border>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <!-- 輸入區域 -->
+        <Grid Grid.Row="1" Margin="10" Background="White" Height="80">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBox x:Name="InputBox"
+                     Grid.Column="0"
+                     VerticalAlignment="Top"
+                     Padding="10"
+                     TextWrapping="Wrap"
+                     AcceptsReturn="True"
+                     PlaceholderText="輸入您的問題..."/>
+
+            <Button x:Name="SendButton"
+                    Grid.Column="1"
+                    Margin="5"
+                    Padding="15,10"
+                    Background="#007ACC"
+                    Foreground="White"
+                    Content="傳送"
+                    Click="SendButton_Click"/>
+        </Grid>
+    </Grid>
+</Window>
+```
+
+#### 步驟 5：後端代碼 (ChatWindow.xaml.cs)
+
+```csharp
+using System.Collections.ObjectModel;
+using System.Windows;
+using Autodesk.Revit.UI;
+using RevitMCP.Core;
+
+namespace RevitMCP
+{
+    public partial class ChatWindow : Window
+    {
+        private readonly GeminiChatService _chatService;
+        private readonly UIApplication _uiApp;
+        private readonly ObservableCollection<string> _messages;
+
+        public ChatWindow(GeminiChatService chatService, UIApplication uiApp)
+        {
+            InitializeComponent();
+            _chatService = chatService;
+            _uiApp = uiApp;
+            _messages = new ObservableCollection<string>();
+            ChatHistory.ItemsSource = _messages;
+
+            _messages.Add("🤖 AI 助手已就緒。請輸入您的問題來控制 Revit。");
+            _messages.Add("💡 例如：請建立一個 5 米長的牆");
+        }
+
+        private async void SendButton_Click(object sender, RoutedEventArgs e)
+        {
+            string userInput = InputBox.Text.Trim();
+            if (string.IsNullOrEmpty(userInput)) return;
+
+            // 顯示用戶訊息
+            _messages.Add($"👤 您: {userInput}");
+            InputBox.Clear();
+
+            // 獲取 AI 回應
+            SendButton.IsEnabled = false;
+            SendButton.Content = "處理中...";
+
+            try
+            {
+                string context = $"您是 Revit BIM 專家助手。可用的 Revit 命令包括: " +
+                    "create_wall, create_floor, query_elements, get_project_info 等。" +
+                    "請用中文簡潔回答，並說明您的操作。";
+
+                string response = await _chatService.ChatAsync(userInput, context);
+                _messages.Add($"🤖 AI: {response}");
+
+                // 如果 AI 建議執行操作，可以在這裡添加自動執行邏輯
+            }
+            finally
+            {
+                SendButton.IsEnabled = true;
+                SendButton.Content = "傳送";
+            }
+        }
+    }
+}
+```
+
+#### 步驟 6：在 Add-in 中註冊新按鈕
+
+修改 `Application.cs` 中的 `OnStartup` 方法，加入 AI Chat 按鈕：
+
+```csharp
+public Result OnStartup(UIControlledApplication application)
+{
+    try
+    {
+        RibbonPanel panel = application.CreateRibbonPanel("MCP Tools");
+        
+        string assemblyPath = Assembly.GetExecutingAssembly().Location;
+
+        // 現有按鈕...
+        
+        // 🆕 新增 AI Chat 按鈕
+        PushButtonData chatButtonData = new PushButtonData(
+            "MCPChat",
+            "AI Chat\n助手",
+            assemblyPath,
+            "RevitMCP.Commands.ChatCommand");
+        chatButtonData.ToolTip = "開啟 AI 對話助手，與 Gemini 2.5 Flash 交互式控制 Revit";
+        PushButton chatButton = panel.AddItem(chatButtonData) as PushButton;
+
+        return Result.Succeeded;
+    }
+    catch (Exception ex)
+    {
+        TaskDialog.Show("錯誤", "載入 MCP Tools 失敗: " + ex.Message);
+        return Result.Failed;
+    }
+}
+```
+
+#### 步驟 7：設定環境變數（給最終使用者）
+
+1. **按 `Win + Pause` 或 `Win + X` → 系統**
+
+2. **點擊「進階系統設定」**
+
+3. **點擊「環境變數」按鈕**
+
+4. **在「系統變數」中點擊「新增」**
+
+5. **填入以下資訊**
+   - 變數名稱：`GEMINI_API_KEY`
+   - 變數值：`您從步驟1複製的 API Key`
+
+6. **點擊「確定」並重新啟動 Revit**
+
+### 步驟 8：編譯並測試
+
+1. **編譯 C# 專案**
+   ```powershell
+   cd MCP/MCP
+   dotnet build -c Release
+   ```
+
+2. **複製 DLL 到 Revit Add-in 目錄**
+   ```powershell
+   $target = "$env:APPDATA\Autodesk\Revit\Addins\2022"
+   Copy-Item "bin\Release\RevitMCP.dll" $target
+   ```
+
+3. **重新啟動 Revit**
+
+4. **點擊「AI Chat 助手」按鈕**
+   - 應該會看到聊天視窗
+   - 開始與 AI 對話！
+
+### 實際使用示例
+
+```
+👤 用戶：我想在 Level 2 建立 3 個方形樓板，尺寸都是 5m × 5m
+
+🤖 AI：我可以幫您建立 3 個方形樓板。我會在以下位置建立它們：
+- 樓板1：(0, 0) 到 (5, 5)
+- 樓板2：(6, 0) 到 (11, 5)  
+- 樓板3：(12, 0) 到 (17, 5)
+
+現在建立中...完成！已建立 3 個樓板，ID 分別為 123456, 123457, 123458
+
+👤 用戶：請把樓板1 的高度改成 4m
+
+🤖 AI：我已將樓板1 的高度改為 4m。修改完成！
+```
+
+---
+
 ## 🔒 安全注意事項
 
 ⚠️ **重要安全提醒**：
@@ -303,6 +736,7 @@ Google 的雲端 AI 開發環境。
 2. **防火牆** - 不建議對外開放連接埠
 3. **程式碼審查** - 執行前請確認程式碼來源可信
 4. **備份** - 操作前請備份 Revit 專案
+5. **API Key 保管** - 絕不要將 API Key 提交到 GitHub，使用環境變數管理
 
 ## 📝 常見問題
 
