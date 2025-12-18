@@ -36,13 +36,13 @@
 > [!CAUTION]
 > ## ⚠️ Git Pull 後必讀：重新編譯 Revit Add-in
 > 
-> 如果您執行了 `git pull` 更新專案，且更新內容包含 **C# 程式碼變更**（`MCP/MCP/*.cs` 檔案），**必須重新編譯並部署 Revit Add-in DLL**，否則新功能將無法使用！
+> 如果您執行了 `git pull` 更新專案，且更新內容包含 **C# 程式碼變更**（`MCP/*.cs` 檔案），**必須重新編譯並部署 Revit Add-in DLL**，否則新功能將無法使用！
 > 
 > **快速步驟：**
 > 1. **關閉 Revit**（否則無法覆蓋 DLL）
 > 2. 執行編譯：
 >    ```powershell
->    cd "您的專案路徑/MCP/MCP"
+>    cd "您的專案路徑/MCP"
 >    dotnet build -c Release
 >    ```
 > 3. 複製 DLL 到 Revit Addins 資料夾：
@@ -53,7 +53,7 @@
 > 
 > | 更新類型 | 需重新編譯 DLL？ | 需重啟 Revit？ |
 > |----------|:---------------:|:-------------:|
-> | C# 程式碼 (`MCP/MCP/*.cs`) | ✅ 是 | ✅ 是 |
+> | C# 程式碼 (`MCP/*.cs`) | ✅ 是 | ✅ 是 |
 > | MCP Server (`MCP-Server/*.ts`) | ❌ 否 | ❌ 否（只需重啟 MCP Server） |
 > | 設定檔 (`*.json`, `*.addin`) | ❌ 否 | ⚠️ 視情況 |
 
@@ -111,7 +111,7 @@ REVIT-MCP/
 > 以下檔案**不包含在 Git 儲存庫中**（被 `.gitignore` 排除）：
 > - `MCP-Server/build/` - MCP Server 編譯輸出
 > - `MCP-Server/node_modules/` - Node.js 相依套件
-> - `MCP/MCP/bin/` - Revit Add-in 編譯輸出
+> - `MCP/bin/` - Revit Add-in 編譯輸出
 
 ### 必要步驟
 
@@ -155,7 +155,7 @@ npm run build
 
 ```powershell
 # 進入 MCP 專案資料夾
-cd "您的專案路徑/MCP/MCP"
+cd "您的專案路徑/MCP"
 
 # 編譯專案
 dotnet build -c Release
@@ -219,7 +219,7 @@ dotnet build -c Release
 2. **編譯專案**
    ```powershell
    # 進入專案目錄
-   cd "您的專案路徑\MCP\MCP"
+   cd "您的專案路徑\MCP"
    
    # 編譯 Release 版本
    dotnet build -c Release
@@ -832,7 +832,7 @@ Antigravity 的一大特色是內建瀏覽器子代理程式，可讓 AI 直接�
 
 #### 步驟 2：在 C# 中建立 AI 聊天服務
 
-在 `MCP/MCP/Core/` 資料夾中建立新檔案 `GeminiChatService.cs`：
+在 `MCP/Core/` 資料夾中建立新檔案 `GeminiChatService.cs`：
 
 ```csharp
 using System;
@@ -920,7 +920,7 @@ namespace RevitMCP.Core
 
 #### 步驟 3：建立 WPF 對話視窗
 
-在 `MCP/MCP/Commands/` 中建立 `ChatCommand.cs`：
+在 `MCP/Commands/` 中建立 `ChatCommand.cs`：
 
 ```csharp
 using System;
@@ -971,7 +971,7 @@ namespace RevitMCP.Commands
 
 #### 步驟 4：建立 WPF 視窗 UI
 
-在 `MCP/MCP/` 中建立 `ChatWindow.xaml`：
+在 `MCP/` 中建立 `ChatWindow.xaml`：
 
 ```xml
 <Window x:Class="RevitMCP.ChatWindow"
@@ -1149,7 +1149,7 @@ public Result OnStartup(UIControlledApplication application)
 
 1. **編譯 C# 專案**
    ```powershell
-   cd MCP/MCP
+   cd MCP
    dotnet build -c Release
    ```
 

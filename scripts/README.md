@@ -123,7 +123,7 @@ A:
 A:
 1. 請先製作程式（見主 README.md 的「步驟 1」）
 2. 或從 GitHub Releases 下載現成版本
-3. 將 DLL 放到 `MCP\MCP\bin\Release\` 資料夾
+3. 將 DLL 放到 `MCP\bin\Release\` 資料夾
 
 ### Q: 看不到輸出訊息？
 A:

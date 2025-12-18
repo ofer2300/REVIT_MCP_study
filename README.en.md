@@ -18,13 +18,13 @@ Enable AI language models to directly control Autodesk Revit via Model Context P
 > [!CAUTION]
 > ## ⚠️ After Git Pull: Rebuild Revit Add-in Required
 > 
-> If you ran `git pull` to update the project, and the update includes **C# code changes** (`MCP/MCP/*.cs` files), **you must rebuild and redeploy the Revit Add-in DLL**, otherwise new features won't work!
+> If you ran `git pull` to update the project, and the update includes **C# code changes** (`MCP/*.cs` files), **you must rebuild and redeploy the Revit Add-in DLL**, otherwise new features won't work!
 > 
 > **Quick Steps:**
 > 1. **Close Revit** (otherwise DLL cannot be overwritten)
 > 2. Build:
 >    ```powershell
->    cd "your-project-path/MCP/MCP"
+>    cd "your-project-path/MCP"
 >    dotnet build -c Release
 >    ```
 > 3. Copy DLL to Revit Addins folder:
@@ -35,7 +35,7 @@ Enable AI language models to directly control Autodesk Revit via Model Context P
 > 
 > | Update Type | Need to Rebuild DLL? | Need to Restart Revit? |
 > |-------------|:-------------------:|:---------------------:|
-> | C# Code (`MCP/MCP/*.cs`) | ✅ Yes | ✅ Yes |
+> | C# Code (`MCP/*.cs`) | ✅ Yes | ✅ Yes |
 > | MCP Server (`MCP-Server/*.ts`) | ❌ No | ❌ No (just restart MCP Server) |
 > | Config Files (`*.json`, `*.addin`) | ❌ No | ⚠️ Depends |
 
@@ -93,7 +93,7 @@ If you obtained this project via `git clone`, **you must complete the following 
 > The following files are **NOT included in the Git repository** (excluded by `.gitignore`):
 > - `MCP-Server/build/` - MCP Server build output
 > - `MCP-Server/node_modules/` - Node.js dependencies
-> - `MCP/MCP/bin/` - Revit Add-in build output
+> - `MCP/bin/` - Revit Add-in build output
 
 ### Required Steps
 
@@ -137,7 +137,7 @@ Paths in configuration files need to be modified according to your environment:
 
 Choose one:
 - **Method A (Recommended)**: Run `scripts/install-addon.bat` to auto-download and install
-- **Method B**: Build the `MCP/MCP/` project yourself (requires Visual Studio and Revit SDK)
+- **Method B**: Build the `MCP/` project yourself (requires Visual Studio and Revit SDK)
 
 ---
 
@@ -230,7 +230,7 @@ If you understand code or want to learn how to build:
    - Open Command Prompt
    - Type the following command:
      ```
-     cd C:\Users\YourUsername\Desktop\MCP\REVIT_MCP_study\MCP\MCP
+     cd C:\Users\YourUsername\Desktop\MCP\REVIT_MCP_study\MCP
      dotnet build -c Release
      ```
    - Wait for the build to complete (you'll see green "Build succeeded" message)

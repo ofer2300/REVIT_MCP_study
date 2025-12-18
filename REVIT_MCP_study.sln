@@ -4,7 +4,7 @@ VisualStudioVersion = 17.5.2.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MCP", "MCP", "{60D02A9B-BD8A-21E2-79E7-27A6B3D0EB49}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RevitMCP", "MCP\MCP\RevitMCP.csproj", "{57BBD698-7815-98B7-0A48-203ED174CAF3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RevitMCP", "MCP\RevitMCP.csproj", "{57BBD698-7815-98B7-0A48-203ED174CAF3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
