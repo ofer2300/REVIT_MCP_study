@@ -1,3 +1,5 @@
+<h2 align="center"><font color="#8B0000">⚠️ 友善提醒：本專案預設使用 Port: 8964，請確保該埠號未被佔用 ⚠️</font></h2>
+
 # Revit MCP - AI-Powered Revit Control
 
 <div align="right">
