@@ -325,14 +325,14 @@ Please refer to the **[Multi-Platform AI Agent Configuration](#-multi-platform-a
 1. Open Revit 2022
 2. Load or create a project
 3. In the "MCP Tools" panel, click the "**MCP Service (On/Off)**" button
-4. Confirm you see "WebSocket Server Started, Listening: localhost:8765"
+4. Confirm you see "WebSocket Server Started, Listening: localhost:8964"
 
 > 💡 **About Port Numbers**:
-> - `8765` is the default port for MCP Server
+> - `8964` is the default port for MCP Server
 > - Port numbers are arbitrary and can be occupied by other programs
-> - If you see "Port 8765 is in use" error, you need to manually adjust:
+> - If you see "Port 8964 is in use" error, you need to manually adjust:
 >   1. Open the configuration file `MCP-Server/src/index.ts`
->   2. Find the line with `PORT = 8765`
+>   2. Find the line with `PORT = 8964`
 >   3. Change to another unused port, like `8766` or `9000`
 >   4. Recompile: `npm run build`
 >   5. Update the port number in all AI applications that use this MCP Server (to the same new port)
@@ -794,7 +794,7 @@ A major feature of Antigravity is the built-in browser sub-agent that lets AI di
 
 ⚠️ **Important Security Reminders**:
 
-1. **Port Management** - MCP Server listens on `localhost:8765` by default, access limited to this machine only
+1. **Port Management** - MCP Server listens on `localhost:8964` by default, access limited to this machine only
 2. **Firewall** - Not recommended to open ports to external networks
 3. **Code Review** - Confirm code source is trustworthy before running
 4. **Backup** - Backup your Revit project before operating
@@ -808,7 +808,7 @@ A: Confirm `RevitMCP.addin` is correctly placed in the Add-in directory and rest
 ### Q: MCP Server can't connect to Revit?
 A: 
 1. Confirm you clicked "MCP Service (On/Off)" in Revit to start the service
-2. Confirm Port 8765 is not occupied by other programs
+2. Confirm Port 8964 is not occupied by other programs
 3. Check firewall settings
 
 ### Q: AI says it can't find Revit tools?
@@ -860,14 +860,14 @@ If you're interested in other technical options:
 
 ### D. Port Number (Port) Supplementary Explanation
 
-This project uses `8765` as the default port, which is an arbitrary choice.
+This project uses `8964` as the default port, which is an arbitrary choice.
 
 **Common port ranges:**
 - `0-1023`: System reserved ports (like 80=HTTP, 443=HTTPS)
 - `1024-49151`: Registered ports (used by common applications)
 - `49152-65535`: Dynamic/private ports (can be freely used)
 
-`8765` is in the registered port range, usually won't conflict with system services, but can be occupied by other applications.
+`8964` is in the registered port range, usually won't conflict with system services, but can be occupied by other applications.
 
 ---
 

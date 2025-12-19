@@ -5,7 +5,7 @@
 import WebSocket from 'ws';
 import fs from 'fs';
 
-const ws = new WebSocket('ws://localhost:8765');
+const ws = new WebSocket('ws://localhost:8964');
 const log = [];
 
 const COLOR_MAP = {

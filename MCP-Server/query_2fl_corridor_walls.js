@@ -4,7 +4,7 @@
 
 import WebSocket from 'ws';
 
-const ws = new WebSocket('ws://localhost:8765');
+const ws = new WebSocket('ws://localhost:8964');
 
 ws.on('open', function () {
     console.log('=== 查詢 2FL 走廊周圍牆體 ===');

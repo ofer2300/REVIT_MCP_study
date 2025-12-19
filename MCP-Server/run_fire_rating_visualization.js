@@ -5,7 +5,7 @@
 
 import WebSocket from 'ws';
 
-const ws = new WebSocket('ws://localhost:8765');
+const ws = new WebSocket('ws://localhost:8964');
 
 // 顏色映射配置
 const COLOR_MAP = {

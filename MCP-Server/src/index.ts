@@ -98,7 +98,7 @@ async function main() {
     await server.connect(transport);
 
     console.error("MCP Server 已準備就緒");
-    console.error("Socket 伺服器監聽埠號: 8765");
+    console.error("Socket 伺服器監聽埠號: 8964");
 }
 
 main().catch((error) => {

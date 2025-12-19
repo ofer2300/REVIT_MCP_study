@@ -213,7 +213,7 @@
 地位：
 - 必需元件
 - 在本機運行
-- 監聽 WebSocket 連接 (localhost:8765)
+- 監聽 WebSocket 連接 (localhost:8964)
 ```
 
 ### 內嵌方案中的情況

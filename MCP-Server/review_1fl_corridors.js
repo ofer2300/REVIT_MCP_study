@@ -4,7 +4,7 @@
 
 import WebSocket from 'ws';
 
-const ws = new WebSocket('ws://localhost:8765');
+const ws = new WebSocket('ws://localhost:8964');
 let step = 0;
 let activeViewId = null;
 

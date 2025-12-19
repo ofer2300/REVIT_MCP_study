@@ -5,7 +5,7 @@
 
 import WebSocket from 'ws';
 
-const ws = new WebSocket('ws://localhost:8765');
+const ws = new WebSocket('ws://localhost:8964');
 
 let currentStep = 0;
 let viewId, roomCenter, walls;

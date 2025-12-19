@@ -31,7 +31,7 @@ namespace RevitMCP.Commands
                 {
                     // 如果未連線，則啟動
                     Application.StartMCPService(commandData.Application);
-                    TaskDialog.Show("MCP 服務", "🟢 服務已啟動\n(監聽埠號: 8765)");
+                    TaskDialog.Show("MCP 服務", "🟢 服務已啟動\n(監聽埠號: 8964)");
                 }
 
                 return Result.Succeeded;
