@@ -15,6 +15,8 @@
 
 Enable AI language models to directly control Autodesk Revit via Model Context Protocol (MCP), achieving AI-driven BIM workflows.
 
+**🎥 Demo Video: [Revit MCP - AI-Powered BIM Workflow Demonstration](https://youtu.be/YpAYF-GxrhA)**
+
 > [!CAUTION]
 > ## ⚠️ After Git Pull: Rebuild Revit Add-in Required
 > 
