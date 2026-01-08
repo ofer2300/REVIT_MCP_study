@@ -684,6 +684,437 @@ export function registerRevitTools(): Tool[] {
                 },
             },
         },
+
+        // =====================================================================
+        // MEP / Fire Protection / Sprinkler Tools (AquaBrain Extension)
+        // =====================================================================
+
+        // 29. Get all pipe types
+        {
+            name: "get_pipe_types",
+            description: "Get all available pipe types in the project, including name, material, and system classification (Sanitary, Domestic Hot Water, Fire Protection, etc.)",
+            inputSchema: {
+                type: "object",
+                properties: {
+                    systemClassification: {
+                        type: "string",
+                        description: "Filter by system classification: Sanitary, DomesticHotWater, DomesticColdWater, FireProtectionWet, FireProtectionDry, Hydronic, Other",
+                    },
+                },
+            },
+        },
+
+        // 30. Query pipes by system
+        {
+            name: "query_pipes",
+            description: "Query pipes in the project filtered by system type, level, or diameter. Returns pipe ID, diameter, length, system type, and connected elements.",
+            inputSchema: {
+                type: "object",
+                properties: {
+                    systemClassification: {
+                        type: "string",
+                        description: "System classification filter (e.g., 'FireProtectionWet', 'Sanitary')",
+                    },
+                    level: {
+                        type: "string",
+                        description: "Level name filter",
+                    },
+                    minDiameter: {
+                        type: "number",
+                        description: "Minimum diameter in mm",
+                    },
+                    maxDiameter: {
+                        type: "number",
+                        description: "Maximum diameter in mm",
+                    },
+                    maxCount: {
+                        type: "number",
+                        description: "Maximum number of results (default 100)",
+                        default: 100,
+                    },
+                },
+            },
+        },
+
+        // 31. Get pipe info
+        {
+            name: "get_pipe_info",
+            description: "Get detailed information about a specific pipe including diameter, length, slope, flow, system type, and connected elements (fittings, equipment, sprinklers).",
+            inputSchema: {
+                type: "object",
+                properties: {
+                    pipeId: {
+                        type: "number",
+                        description: "The pipe Element ID",
+                    },
+                },
+                required: ["pipeId"],
+            },
+        },
+
+        // 32. Create pipe
+        {
+            name: "create_pipe",
+            description: "Create a new pipe between two points. Specify system type, diameter, and level.",
+            inputSchema: {
+                type: "object",
+                properties: {
+                    startX: {
+                        type: "number",
+                        description: "Start point X coordinate (mm)",
+                    },
+                    startY: {
+                        type: "number",
+                        description: "Start point Y coordinate (mm)",
+                    },
+                    startZ: {
+                        type: "number",
+                        description: "Start point Z coordinate (mm)",
+                    },
+                    endX: {
+                        type: "number",
+                        description: "End point X coordinate (mm)",
+                    },
+                    endY: {
+                        type: "number",
+                        description: "End point Y coordinate (mm)",
+                    },
+                    endZ: {
+                        type: "number",
+                        description: "End point Z coordinate (mm)",
+                    },
+                    diameter: {
+                        type: "number",
+                        description: "Pipe diameter (mm)",
+                        default: 25,
+                    },
+                    pipeType: {
+                        type: "string",
+                        description: "Pipe type name (optional)",
+                    },
+                    systemType: {
+                        type: "string",
+                        description: "System type name (e.g., 'Fire Protection Wet')",
+                    },
+                    level: {
+                        type: "string",
+                        description: "Level name",
+                    },
+                },
+                required: ["startX", "startY", "startZ", "endX", "endY", "endZ"],
+            },
+        },
+
+        // 33. Update pipe diameter
+        {
+            name: "update_pipe_diameter",
+            description: "Update the diameter of one or more pipes. Can batch update multiple pipes at once.",
+            inputSchema: {
+                type: "object",
+                properties: {
+                    pipeId: {
+                        type: "number",
+                        description: "Single pipe Element ID",
+                    },
+                    pipeIds: {
+                        type: "array",
+                        items: { type: "number" },
+                        description: "Array of pipe Element IDs for batch update",
+                    },
+                    diameter: {
+                        type: "number",
+                        description: "New diameter in mm",
+                    },
+                },
+                required: ["diameter"],
+            },
+        },
+
+        // 34. Get sprinkler types
+        {
+            name: "get_sprinkler_types",
+            description: "Get all available sprinkler head types in the project, including name, K-factor, coverage area, and temperature rating.",
+            inputSchema: {
+                type: "object",
+                properties: {
+                    responseType: {
+                        type: "string",
+                        description: "Filter by response type: Standard, Quick, Extended Coverage",
+                    },
+                },
+            },
+        },
+
+        // 35. Query sprinklers
+        {
+            name: "query_sprinklers",
+            description: "Query sprinkler heads in the project filtered by level, type, or coverage status. Returns ID, location, type, connected pipe, and coverage area.",
+            inputSchema: {
+                type: "object",
+                properties: {
+                    level: {
+                        type: "string",
+                        description: "Level name filter",
+                    },
+                    sprinklerType: {
+                        type: "string",
+                        description: "Sprinkler type name filter",
+                    },
+                    room: {
+                        type: "string",
+                        description: "Room name or number filter",
+                    },
+                    maxCount: {
+                        type: "number",
+                        description: "Maximum number of results (default 200)",
+                        default: 200,
+                    },
+                },
+            },
+        },
+
+        // 36. Create sprinkler head
+        {
+            name: "create_sprinkler",
+            description: "Place a sprinkler head at the specified location. Optionally connect to nearby pipe.",
+            inputSchema: {
+                type: "object",
+                properties: {
+                    x: {
+                        type: "number",
+                        description: "X coordinate (mm)",
+                    },
+                    y: {
+                        type: "number",
+                        description: "Y coordinate (mm)",
+                    },
+                    z: {
+                        type: "number",
+                        description: "Z coordinate (mm) - ceiling height",
+                    },
+                    sprinklerType: {
+                        type: "string",
+                        description: "Sprinkler type name",
+                    },
+                    level: {
+                        type: "string",
+                        description: "Level name",
+                    },
+                    connectToPipe: {
+                        type: "boolean",
+                        description: "Auto-connect to nearest pipe (default false)",
+                        default: false,
+                    },
+                },
+                required: ["x", "y"],
+            },
+        },
+
+        // 37. Get MEP system info
+        {
+            name: "get_mep_system_info",
+            description: "Get information about an MEP system (piping or duct), including total length, element count, and flow analysis.",
+            inputSchema: {
+                type: "object",
+                properties: {
+                    systemId: {
+                        type: "number",
+                        description: "MEP System Element ID",
+                    },
+                    systemName: {
+                        type: "string",
+                        description: "System name to search for",
+                    },
+                },
+            },
+        },
+
+        // 38. Query MEP systems
+        {
+            name: "query_mep_systems",
+            description: "Query all MEP systems in the project, optionally filtered by type (Piping, Duct, Electrical).",
+            inputSchema: {
+                type: "object",
+                properties: {
+                    systemType: {
+                        type: "string",
+                        description: "Filter by type: Piping, Duct, Electrical, All",
+                        default: "All",
+                    },
+                    classification: {
+                        type: "string",
+                        description: "Filter by classification (e.g., 'FireProtection', 'Sanitary')",
+                    },
+                },
+            },
+        },
+
+        // 39. Check MEP clashes
+        {
+            name: "check_mep_clashes",
+            description: "Run clash detection between MEP elements and other categories (Structural, Architectural). Returns list of clashing elements.",
+            inputSchema: {
+                type: "object",
+                properties: {
+                    category1: {
+                        type: "string",
+                        description: "First category: Pipes, Ducts, CableTray, Conduit",
+                        default: "Pipes",
+                    },
+                    category2: {
+                        type: "string",
+                        description: "Second category to check against: Structural, Walls, Floors, All",
+                        default: "Structural",
+                    },
+                    level: {
+                        type: "string",
+                        description: "Limit to specific level (optional)",
+                    },
+                    tolerance: {
+                        type: "number",
+                        description: "Clash tolerance in mm (default 0)",
+                        default: 0,
+                    },
+                },
+            },
+        },
+
+        // 40. Route branch pipes
+        {
+            name: "route_branch_pipes",
+            description: "Automatically route branch pipes from a main pipe to multiple sprinkler heads.",
+            inputSchema: {
+                type: "object",
+                properties: {
+                    mainPipeId: {
+                        type: "number",
+                        description: "Main pipe Element ID to branch from",
+                    },
+                    sprinklerIds: {
+                        type: "array",
+                        items: { type: "number" },
+                        description: "Array of sprinkler Element IDs to connect",
+                    },
+                    branchDiameter: {
+                        type: "number",
+                        description: "Branch pipe diameter in mm",
+                        default: 25,
+                    },
+                    dropHeight: {
+                        type: "number",
+                        description: "Vertical drop height from main to sprinkler in mm",
+                        default: 300,
+                    },
+                },
+                required: ["mainPipeId", "sprinklerIds"],
+            },
+        },
+
+        // 41. Get linked models
+        {
+            name: "get_linked_models",
+            description: "Get information about linked Revit models (Architecture, Structure, MEP disciplines).",
+            inputSchema: {
+                type: "object",
+                properties: {},
+            },
+        },
+
+        // 42. Query linked model elements
+        {
+            name: "query_linked_elements",
+            description: "Query elements from linked models by category. Useful for coordination with Architecture or Structure.",
+            inputSchema: {
+                type: "object",
+                properties: {
+                    linkName: {
+                        type: "string",
+                        description: "Name of the linked model (partial match)",
+                    },
+                    category: {
+                        type: "string",
+                        description: "Element category to query (Walls, Floors, Ceilings, Rooms)",
+                    },
+                    level: {
+                        type: "string",
+                        description: "Filter by level name",
+                    },
+                    maxCount: {
+                        type: "number",
+                        description: "Maximum results (default 100)",
+                        default: 100,
+                    },
+                },
+                required: ["category"],
+            },
+        },
+
+        // 43. Calculate hydraulic flow
+        {
+            name: "calculate_hydraulic_flow",
+            description: "Calculate hydraulic flow for fire protection system using Hazen-Williams formula. Returns pressure drop and velocity.",
+            inputSchema: {
+                type: "object",
+                properties: {
+                    pipeIds: {
+                        type: "array",
+                        items: { type: "number" },
+                        description: "Array of pipe Element IDs in flow path",
+                    },
+                    flowRate: {
+                        type: "number",
+                        description: "Flow rate in GPM",
+                    },
+                    cFactor: {
+                        type: "number",
+                        description: "Hazen-Williams C-factor (default 120 for steel)",
+                        default: 120,
+                    },
+                },
+                required: ["pipeIds", "flowRate"],
+            },
+        },
+
+        // 44. Validate sprinkler coverage
+        {
+            name: "validate_sprinkler_coverage",
+            description: "Validate sprinkler coverage per NFPA 13 requirements. Checks spacing, distance to walls, and coverage overlap.",
+            inputSchema: {
+                type: "object",
+                properties: {
+                    level: {
+                        type: "string",
+                        description: "Level to validate",
+                    },
+                    hazardClass: {
+                        type: "string",
+                        description: "Hazard classification: Light, Ordinary1, Ordinary2, ExtraHazard",
+                        default: "Light",
+                    },
+                    maxSpacing: {
+                        type: "number",
+                        description: "Maximum sprinkler spacing in feet (NFPA 13)",
+                        default: 15,
+                    },
+                },
+                required: ["level"],
+            },
+        },
+
+        // 45. Get fire protection summary
+        {
+            name: "get_fire_protection_summary",
+            description: "Get a summary of fire protection elements in the project: sprinkler count, pipe length, system pressure, and compliance status.",
+            inputSchema: {
+                type: "object",
+                properties: {
+                    level: {
+                        type: "string",
+                        description: "Filter by level (optional, omit for whole project)",
+                    },
+                },
+            },
+        },
     ];
 }
 

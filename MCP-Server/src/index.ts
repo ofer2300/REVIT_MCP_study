@@ -2,7 +2,11 @@
 
 /**
  * Revit MCP Server
- * 提供 AI 與 Revit 之間的 MCP 協定橋接
+ * Provides MCP protocol bridge between AI and Revit
+ *
+ * Environment Variables:
+ * - REVIT_VERSION: Target Revit version (2022, 2023, 2024, 2025, 2026)
+ * - MCP_PORT: WebSocket port (default: 8964)
  */
 
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
@@ -15,7 +19,11 @@ import {
 import { RevitSocketClient } from "./socket.js";
 import { registerRevitTools, executeRevitTool } from "./tools/revit-tools.js";
 
-// MCP 伺服器實例
+// Configuration from environment
+const REVIT_VERSION = process.env.REVIT_VERSION || "2025";
+const MCP_PORT = parseInt(process.env.MCP_PORT || "8964", 10);
+
+// MCP Server instance
 const server = new Server(
     {
         name: "revit-mcp-server",
@@ -28,8 +36,8 @@ const server = new Server(
     }
 );
 
-// Revit Socket 客戶端
-const revitClient = new RevitSocketClient();
+// Revit Socket client with configurable port
+const revitClient = new RevitSocketClient("localhost", MCP_PORT);
 
 /**
  * 處理工具列表請求
@@ -88,20 +96,24 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 });
 
 /**
- * 啟動伺服器
+ * Start the server
  */
 async function main() {
-    console.error("Revit MCP Server 啟動中...");
-    console.error("等待 Revit Plugin 連線...");
+    console.error("=".repeat(60));
+    console.error("Revit MCP Server Starting...");
+    console.error(`Target Revit Version: ${REVIT_VERSION}`);
+    console.error(`WebSocket Port: ${MCP_PORT}`);
+    console.error("=".repeat(60));
+    console.error("Waiting for Revit Plugin connection...");
 
     const transport = new StdioServerTransport();
     await server.connect(transport);
 
-    console.error("MCP Server 已準備就緒");
-    console.error("Socket 伺服器監聽埠號: 8964");
+    console.error("MCP Server Ready");
+    console.error(`Listening on: localhost:${MCP_PORT}`);
 }
 
 main().catch((error) => {
-    console.error("伺服器啟動失敗:", error);
+    console.error("Server startup failed:", error);
     process.exit(1);
 });
